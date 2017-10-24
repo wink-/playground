@@ -1,0 +1,9 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+<!--Add files you want included in your local build here, this file does not get committed -->
+  <Script file="playground\frost.lua" />
+  <Script file="playground\unholy.lua" />
+  <Script file="playground\blood.lua" />
+  <Script file="playground\vengeance.lua" />
+  <Script file="playground\protpal.lua" />
+</Ui>
