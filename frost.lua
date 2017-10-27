@@ -20,12 +20,6 @@ local GUI = {
 	-- Settings
 	{type = 'header', size = 16, text = 'Settings',	align = 'center',	size = 16},
 	{type = 'ruler'}, {type = 'spacer'},
-		--TODO: Targetting: Use, or NOT use?! We'll see....
-	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
-	{type = 'combo', default = 'normal', key = 'target', list = Zylla.faketarget, width = 75},
-	{type = 'spacer'},
-	{type = 'text', text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
-	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
 	-- Class Settings
 	{type = 'checkbox', text = 'Use Death Grip as backup Interrupt', key = 'DGInt', default = false},
 	{type = 'checkbox', text = 'Wraithwalk out of Root', key = 'wraithroot', default = false},
@@ -36,10 +30,10 @@ local GUI = {
 		-- Survival
 	{type = 'header', 		size = 16, text = 'Survival',	align = 'center',	size = 16},
 	{type = 'checkbox',		text = 'Anti-Magic Shell',	align = 'left', key = 'ams', default = false},
-	{type = 'checkspin', 	text = 'Icebound Fortitude', key = 'ibf', spin = 30, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin', 	text = 'Icebound Fortitude', key = 'ibf', spin = 45, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
 	{type = 'checkspin',	text = 'Healthstone', 	key = 'HS', spin = 45, step = 5, shiftStep = 10, max = 100, min = 1, check = false},
 	{type = 'checkspin',	text = 'Ancient Healing Potion', key = 'AHP', spin = 45, step = 5, shiftStep = 10, max = 100, min = 1, check = false},
-	{type = 'spinner', 		text = 'Death Strike', 	key = 'ds',	default_spin = 35},
+	{type = 'spinner', 		text = 'Death Strike', 	key = 'ds',	default_spin = 45},
 	{type = 'ruler'},{type = 'spacer'},
 	unpack(Zylla.Mythic_GUI),
 }
@@ -196,11 +190,7 @@ local inCombat = {
 	{Interrupts, 'toggle(Interrupts)&toggle(xIntRandom)&interruptAt(70)', 'enemies'},
 	{Survival, 'player.health<100'},
 	{Cooldowns, 'toggle(Cooldowns)&target.inMelee'},
-	{xCombat, 'UI(target)==normal'},
-	{xCombat, 'combat&alive&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&UI(target)==furthest', 'furthestenemy'},
+	{xCombat},
 	{Mythic_Plus, 'inMelee'}
 }
 
