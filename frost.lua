@@ -6,11 +6,11 @@ local Mythic_Plus = _G.Mythic_Plus
 local GUI = {
 	--unpack(Zylla.Logo_GUI),
 	-- Header
-	{type = 'header',  	size = 16, text = 'Keybinds', align = 'center'},
-	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',	align = 'left', key = 'lshift',	default = true},
+	{type = 'header',  	size = 16, text = 'Keybinds',	 														align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',				align = 'left', 			key = 'lshift', 	default = true},
 	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Sindragosa\'s Fury|r',	align = 'left', key = 'lcontrol', default = true},
-	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r', align = 'left', key = 'lalt', default = false},
-	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r', align = 'left', key = 'ralt', default = false},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'lalt', 		default = false},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',							align = 'left', 			key = 'ralt', 		default = false},
 	{type = 'spacer'},
 --{type = 'checkbox', text = 'Enable Chatoverlay', key = 'chat', width = 55, default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 --unpack(Zylla.PayPal_GUI),
@@ -19,15 +19,20 @@ local GUI = {
 	--{type = 'ruler'},	 	{type = 'spacer'},
 	-- Settings
 	{type = 'header', size = 16, text = 'Settings',	align = 'center',	size = 16},
-	{type = 'checkbox', text = 'Use Death Grip as backup Interrupt', key = 'DGInt', default = false},
-	{type = 'checkbox', text = 'Wraithwalk out of Root', key = 'wraithroot', default = false},	
 	{type = 'ruler'}, {type = 'spacer'},
 		--TODO: Targetting: Use, or NOT use?! We'll see....
-	{type = 'header', 	size = 16, text = 'Targetting:', align = 'center'},
+	{type = 'header', 	size = 16, text = 'Targetting:',													align = 'center'},
 	{type = 'combo', default = 'normal', key = 'target', list = Zylla.faketarget, width = 75},
 	{type = 'spacer'},
 	{type = 'text', text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
+	-- Class Settings
+	{type = 'checkbox', text = 'Use Death Grip as backup Interrupt', key = 'DGInt', default = false},
+	{type = 'checkbox', text = 'Wraithwalk out of Root', key = 'wraithroot', default = false},
+	{type = 'checkbox', text = 'Obliteration', key = 'obliteration', default = true},
+	{type = 'checkbox', text = 'Pillar of Frost', key = 'pof', default = true},
+	{type = 'checkbox', text = 'Sindragosa\'s Fury', key = 'sf', default = true},
+
 		-- Survival
 	{type = 'header', 		size = 16, text = 'Survival',	align = 'center',	size = 16},
 	{type = 'checkbox',		text = 'Anti-Magic Shell',	align = 'left', key = 'ams', default = false},
@@ -52,12 +57,11 @@ local exeOnLoad = function()
 		name = 'Interrupt Anyone',
 		text = 'Interrupt all nearby enemies, without targeting them.',
 		icon = 'Interface\\Icons\\inv_ammo_arrow_04',
-	})	
+	})
 
 end
 
 local PreCombat = {
-	{'%pause', 'player.buff(Shadowmeld)'},
 
 }
 
@@ -87,18 +91,18 @@ local Cooldowns = {
 	{'Blood Fury', '!talent(7,2)||target.dot(Breath of Sindragosa).ticking'},
 	{'Berserking', 'player.buff(Pillar of Frost)'},
     -- actions.standard+=/sindragosas_fury,if=(equipped.consorts_cold_core|buff.pillar_of_frost.up)&buff.unholy_strength.up&debuff.razorice.stack=5
-	{'Sindragosa\'s Fury', '{equipped(144293) || player.buff(Pillar of Frost)} & player.buff(Unholy Strength) & debuff(Razorice).count = 5', 'target'},
+	{'Sindragosa\'s Fury', 'UI(sf)&{equipped(144293) || player.buff(Pillar of Frost)} & player.buff(Unholy Strength) & debuff(Razorice).count = 5', 'target'},
 	-- # Pillar of frost conditions
 	-- actions.cds+=/pillar_of_frost,if=talent.obliteration.enabled&(cooldown.obliteration.remains>20|cooldown.obliteration.remains<10|!talent.icecap.enabled)
-	{'Pillar of Frost', 'talent(7,1) & {cooldown(Obliteration).remains > 20 || cooldown(Obliteration).remains < 10 || !talent(3,1)}'},
+	{'Pillar of Frost', 'UI(pof)&talent(7,1) & {cooldown(Obliteration).remains > 20 || cooldown(Obliteration).remains < 10 || !talent(3,1)}'},
 	-- actions.cds+=/pillar_of_frost,if=talent.breath_of_sindragosa.enabled&cooldown.breath_of_sindragosa.ready&runic_power>50
 	-- actions.cds+=/pillar_of_frost,if=talent.breath_of_sindragosa.enabled&cooldown.breath_of_sindragosa.remains>40
 	-- actions.cds+=/pillar_of_frost,if=talent.hungering_rune_weapon.enabled
-	{'Pillar of Frost', 'talent(7,3)'},
+	{'Pillar of Frost', 'UI(pof)&talent(7,3)'},
 	-- actions.cds+=/breath_of_sindragosa,if=buff.pillar_of_frost.up
 	-- actions.cds+=/call_action_list,name=cold_heart,if=equipped.cold_heart&((buff.cold_heart.stack>=10&!buff.obliteration.up)|target.time_to_die<=gcd)
 	--actions.cds+=/obliteration,if=rune>=1&runic_power>=20&(!talent.frozen_pulse.enabled|rune<2|buff.pillar_of_frost.remains<=12)&(!talent.gathering_storm.enabled|!cooldown.remorseless_winter.ready)&(buff.pillar_of_frost.up|!talent.icecap.enabled)
-	{'Obliteration', 'player.buff(Pillar of Frost) || cooldown(Pillar of Frost).remains > 10'},
+	{'Obliteration', 'UI(obliteration)&{player.buff(Pillar of Frost) || cooldown(Pillar of Frost).remains > 10}'},
 	-- actions.cds+=/hungering_rune_weapon,if=!buff.hungering_rune_weapon.up&rune.time_to_2>gcd&runic_power<40
 
 }
@@ -134,7 +138,7 @@ local standard1 = {
 	{'Obliterate'},
 	{'Frost Strike', 'player.health > UI(ds)'},
 	{'Empowered Rune Weapon'},
-	
+
 
 }
 local standard = {
@@ -197,7 +201,7 @@ local inCombat = {
 	{xCombat, 'combat&alive&UI(target)==lowest', 'lowestenemy'},
 	{xCombat, 'combat&alive&UI(target)==nearest', 'nearestenemy'},
 	{xCombat, 'combat&alive&UI(target)==furthest', 'furthestenemy'},
-	{Mythic_Plus, 'inMelee'},
+	{Mythic_Plus, 'inMelee'}
 }
 
 local outCombat = {
@@ -205,7 +209,7 @@ local outCombat = {
 	{PreCombat},
 }
 NeP.CR:Add(251, {
-	name = Zylla.ClassColor..'[Camby\'s]|r Death Knight - Frost',
+	name = Zylla.ClassColor..'[Camby\'s] Death Knight - Frost',
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,

@@ -28,6 +28,7 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'trinket2', default = false},
 	{type = 'checkspin', text = 'Kil\'Jaeden\'s Burning Wish - Units', key = 'kj', align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = false, desc = Zylla.ClassColor..'KJBW used only on X units|r'},
 	{type = 'header', size = 14, text = 'Class Settings', align = 'Left'},
+	{type = 'checkbox', text = 'Wraithwalk out of Root', key = 'wraithroot', default = true},
 	{type = 'checkbox', text = 'Use Asphyxiate as backup Interrupt', key = 'ASPInt',	default = false},
 	{type = 'checkbox', text = 'Use Death Grip as backup Interrupt', key = 'DGInt',	default = false},
 	{type = 'checkbox', text = 'Use Death Grip as backup Taunt', key = 'DGTaunt', default = false},
@@ -75,7 +76,12 @@ local exeOnLoad = function()
 		text = 'Taunt a nearby enemy in combat, when threat gets low, without targeting it.',
 		icon = 'Interface\\Icons\\spell_nature_reincarnation',
 	})
-
+	NeP.Interface:AddToggle({
+		key = 'dps_rotation',
+		name = 'Use DPS rotation',
+		text = 'Single target dps rotation.',
+		icon = 'Interface\\Icons\\ability_backstab',
+	})
 end
 
 local PreCombat = {
@@ -90,9 +96,9 @@ local PreCombat = {
 }
 
 local Survival = {
-	{'Icebound Fortitude', 'UI(IF_check)&health<=(IF_spin)&{{incdmg(2.5)>health.max*0.50}||state(stun)}'},
+	{'Icebound Fortitude', 'UI(IF_check)&player.health<=(IF_spin)'},
 	--{'Anti-Magic Shell', 'incdmg(3).magic>health.max*0.50'},
-	{'Wraith Walk', 'state(root)'},
+	{'Wraith Walk', 'UI(wraithroot)&player.state(root)'},
 	{'#152615', 'item(152615).usable&item(152615).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 													--XXX: Astral Healing Potion
 	{'#127834', 'item(152615).count==0&item(127834).usable&item(127834).count>0&health<=UI(AHP_spin)&UI(AHP_check)'}, 		--XXX: Ancient Healing Potion
 	{'#5512', 'item(5512).usable&item(5512).count>0&health<=UI(HS_spin)&UI(HS_check)'}, 																	--XXX: Health Stone
@@ -115,34 +121,57 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'!Mind Freeze', 'inFront&range<=15'},
+	{'&Mind Freeze', 'inFront&range<=15'},
 	{'!Asphyxiate', 'range<=30&inFront&spell(Mind Freeze).cooldown>=gcd&!player.lastgcd(Mind Freeze)'},
 	{'!Death Grip', 'UI(DGInt)&range<=30&inFront&spell(Mind Freeze).cooldown>=gcd&spell(Asphyxiate).cooldown>=gcd'},
 	{'!Arcane Torrent', 'inMelee&spell(Mind Freeze).cooldown>=gcd&!player.lastgcd(Mind Freeze)'},
 }
 
 local xTaunts = {
-	{'Dark Command', 'inMelee&combat&alive&threat<100'},
-	{'Death Grip', 'UI(DGTaunt)&range<=30&combat&alive&threat<100&spell(Dark Command).cooldown>=gcd&!player.lastgcd(Dark Command)'},
+	{'&Dark Command', 'inMelee&combat&alive&threat<100'},
+	{'&Death Grip', 'UI(DGTaunt)&range<=30&combat&alive&threat<100&spell(Dark Command).cooldown>=gcd&!player.lastgcd(Dark Command)'},
 }
-
+local dps = {
+	{'Death Strike', 'inFront&deficit<=10'},
+	{'Death And Decay', 'UI(dndplayer_check)&talent(2,1)&!player.buff(Dancing Rune Weapon)&player.area(10).enemies>=UI(dndtarget_spin)', 'player.ground'},
+	{'Death And Decay', 'UI(dndtarget_check)&talent(2,1)&!player.buff(Dancing Rune Weapon)&player.area(10).enemies>=UI(dndtarget_spin)', 'target.ground'},
+	{'Bloodrinker', '!player.buff(Dancing Rune Weapon)', 'target'},
+	{'Marrowrend', 'player.buff(Bone Shield).duration<=3&inFront'},
+	{'Blood Boil', 'player.area(10).enemies >= 1 & {player.area(10).enemies.debuff(Blood Plague)<gcd || spell(Blood Boil).charges>=1.8}'},
+	{'Marrowrend', 'player.buff(Bone Shield).count<=5&talent(3,1)&inFront'},
+	{'Death Strike', 'inFront&{player.buff(Blood Shield)||deficit<=15||{deficit<=25&player.buff(Dancing Rune Weapon)}}'},
+	{'Consumption', 'UI(artifact_check) & player.health <= UI(artifact_spin) & inFront & inMelee'},
+	{'Heart Strike', 'player.buff(Dancing Rune Weapon)'},
+	{'Death And Decay', 'UI(dndplayer_check)&player.buff(Crimson Scourge)&player.area(10).enemies>=UI(dndtarget_spin)', 'player.ground'},
+	{'Death And Decay', 'UI(dndtarget_check)&player.buff(Crimson Scourge)&player.area(10).enemies>=UI(dndtarget_spin)', 'target.ground'},
+	{'Blood Boil', 'player.area(10).enemies >= 1'},
+	{'Death And Decay', 'UI(dndplayer_check)&player.area(10).enemies>=UI(dndtarget_spin)', 'player.ground'},
+	{'Death And Decay', 'UI(dndtarget_check)&player.area(10).enemies>=UI(dndtarget_spin)', 'target.ground'},
+	{'Heart Strike', 'player.runes>=3 || player.buff(Bone Shield).count > 6'},
+}
 local xCombat = {
 	{'Death Strike', 'inFront&player.health<=UI(DSA_spin)&UI(DSA_check)'},
 	{'Death Strike', 'inFront&player.runicpower>=UI(DSb_spin)&UI(DSb_check)'},
-	{'Blood Boil', 'player.area(10).enemies >= 1 & player.area(10).enemies.debuff(Blood Plague)<gcd & spell(Blood Boil).charges>=1.65'},
-	{'Death\'s Caress', 'range > 10 & range<=40&debuff(Blood Plague).remains<3&inFront', 'target'},
+	{'Death And Decay', 'UI(dndplayer_check)&!player.moving&talent(2,1)&!player.buff(Dancing Rune Weapon)&player.area(10).enemies>=UI(dndtarget_spin)', 'player.ground'},
+	{'Death And Decay', 'UI(dndtarget_check)&!player.moving&talent(2,1)&!player.buff(Dancing Rune Weapon)&player.area(10).enemies>=UI(dndtarget_spin)', 'target.ground'},	
+	{'Blooddrinker', 'UI(blooddrink_check)&player.health <= UI(blooddrink_spin)&inFront&!player.buff(Dancing Rune Weapon)'},
 	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront'},
-	{'Marrowrend', 'player.buff(Bone Shield).count<7&talent(3,1)&inFront'},
+	{'Blood Boil', 'player.area(10).enemies >= 1 || {player.area(10).enemies.debuff(Blood Plague)<gcd & spell(Blood Boil).charges>=1.8}'},
+	{'Death\'s Caress', 'range > 15 & range<=40&debuff(Blood Plague).remains<3&inFront', 'target'},
+	{'Marrowrend', 'player.buff(Bone Shield).count<=5&talent(3,1)&inFront'},
+	{'Consumption', 'UI(artifact_check) & player.health <= UI(artifact_spin) & inFront & inMelee'},
+	{'Heart Strike', 'player.buff(Dancing Rune Weapon)'},
 	{'Death and Decay', 'UI(dndtarget_check)&advanced&range<=30&{{talent(2,1)&player.buff(Crimson Scourge)}||{area(10).enemies>=UI(dndtarget_spin)&player.buff(Crimson Scourge}}', 'target.ground'},
 	{'Death and Decay', 'UI(dndtarget_check)&advanced&range<=30&{{talent(2,1)&player.runes>=3}||{area(10).enemies>=UI(dndtarget_spin)}}', 'target.ground'},
 	{'Death and Decay', 'UI(dndplayer_check)&!player.moving&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>=UI(dndplayer_spin)&player.buff(Crimson Scourge}}', 'player.ground'},
 	{'Death and Decay', 'UI(dndplayer_check)&!player.moving&{{talent(2,1)&player.runes>=3}||{player.area(10).enemies>=UI(dndplayer_spin)}}', 'player.ground'},
-	{'Blooddrinker', 'UI(blooddrink_check)&player.health <= UI(blooddrink_spin)&inFront&player.runes>=3'},
-	{'Heart Strike', 'inFront&{player.runes>=3||player.buff(Death and Decay)}'},
+	{'Blood Boil', 'player.area(10).enemies>=1'},
 	{'Death and Decay', 'UI(dndtarget_check)&advanced&!talent(2,1)&range<=30&area(10).enemies>=1&player.buff(Crimson Scourge)', 'target.ground'},
 	{'Death and Decay', 'UI(dndplayer_check)&!player.moving&!talent(2,1)&player.area(10).enemies>=1&player.buff(Crimson Scourge)', 'player.ground'},
-	{'Blood Boil', 'player.area(10).enemies>=1'},
-	{'Consumption', 'UI(artifact_check) & player.health <= UI(artifact_spin) & inFront & inMelee'},
+	{'Death And Decay', 'UI(dndplayer_check)&player.area(10).enemies>=UI(dndtarget_spin)', 'player.ground'},
+	{'Death And Decay', 'UI(dndtarget_check)&player.area(10).enemies>=UI(dndtarget_spin)', 'target.ground'},
+	{'Heart Strike', 'inFront&{player.runes>=3||player.buff(Bone Shield).count > 6}'},
+
 }
 
 local inCombat = {
@@ -154,7 +183,8 @@ local inCombat = {
 	{Survival},
 	{Cooldowns, 'toggle(Cooldowns)'},
 	{Mythic_Plus, 'inMelee'},
-	{xCombat},
+	{dps, 'toggle(dps_rotation)'},
+	{xCombat, '!toggle(dps_rotation)'},
 
 }
 

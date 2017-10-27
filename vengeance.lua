@@ -24,18 +24,20 @@ local GUI = {
 -- 	{type = 'text', text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
 -- 	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
 	-- Settings
-	{type = 'header', size = 16, text = 'Class Settings', align = 'center'},
-	{type = 'checkbox', text = 'Enable DBM Integration', key = 'kDBM', default = true},
+	{type = 'header', size = 16, text = 'Settings', align = 'center'},
+	{type = 'checkbox', text = 'Enable DBM Integration', key = 'kDBM', default = false},
 	{type = 'checkbox',	text = 'Enable \'pre-potting\' and Flasks',	key = 'prepot',	default = false},
 	{type = 'combo', default = "1", key = "list", list = Zylla.prepots,	width = 175},
 	{type = 'spacer'}, {type = 'spacer'},
-	{type = 'checkspin', text = 'Light\'s Judgment - Units', key = 'LJ', spin = 4, max = 20, min = 1, step = 1, shiftStep = 5, check = true, desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkspin', text = 'Light\'s Judgment - Units', key = 'LJ', spin = 4, max = 20, min = 1, step = 1, shiftStep = 5, check = false, desc = Zylla.ClassColor..'World Spell usable on Argus.|r'},
+	{type = 'checkbox', text = 'Use Trinket #1', key = 'trinket1', default = false},
+	{type = 'checkbox', text = 'Use Trinket #2', key = 'trinket2', default = false},
+	{type = 'checkspin', text = 'Kil\'Jaeden\'s Burning Wish - Units', key = 'kj', align = 'left', width = 55, step = 1, shiftStep = 5, spin = 4, max = 20, min = 1, check = false, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
 	{type = 'checkbox', text = 'Infernal Strike (Flame Crash Talent)', key = 'kIS',	default = true},
 	{type = 'checkbox', text = 'Sigil of Flame', key = 'flame',	default = true},
-	{type = 'checkbox', text = 'Use Trinket #1', key = 'trinket1', default = false},
-	{type = 'checkbox', text = 'Use Trinket #2', key = 'trinket2', default = false,	desc = Zylla.ClassColor..'Trinkets will be used whenever possible!|r'},
-	{type = 'checkspin', text = 'Kil\'Jaeden\'s Burning Wish - Units', key = 'kj', align = 'left', width = 55, step = 1, shiftStep = 5, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
-	{type = 'ruler'}, {type = 'spacer'},
+	{type = 'checkbox', text = 'Sigil of Misery', key = 'misery',	default = true},
+	{type = 'checkbox', text = 'Sigil of Silence', key = 'silence',	default = true},
+	{type = 'ruler'},
 	-- Survival
 	{type = 'header', text = 'Survival', align = 'center'},
 	{type = 'checkspin', text = 'Soul Cleave', key = 'schp', default = 75, max = 100, min = 1, step = 5, shiftStep = 10, check = true},
@@ -94,8 +96,8 @@ local Keybinds = {
 
 local Interrupts = {
 	{'!Consume Magic', 'target.interruptAt(70)&target.range<=20'},
-	{'!Sigil of Misery', 'advanced&target.interruptAt(1)&target.range<31&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
-	{'!Sigil of Silence', 'advanced&target.interruptAt(5)&target.range<31&spell(Sigil of Misery).cooldown>gcd&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
+	{'!Sigil of Misery', 'UI(misery)&advanced&target.interruptAt(1)&target.range<31&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
+	{'!Sigil of Silence', 'UI(silence)&advanced&target.interruptAt(5)&target.range<31&spell(Sigil of Misery).cooldown>gcd&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)', 'target.ground'},
 	{'!Arcane Torrent', 'target.interruptAt(70)&target.inFront&target.inMelee&spell(Consume Magic).cooldown>gcd&!prev_gcd(Consume Magic)'},
 }
 
@@ -136,8 +138,8 @@ local xCombat = {
 	{'Spirit Bomb', 'player.buff(Soul Fragments).count>3', 'enemies'},
 	{'Soul Carver', 'target.inFront', 'target'},
 	{'&Infernal Strike', 'UI(kIS)&target.inMelee&!player.moving&talent(3,2)&target.debuff(Sigil of Flame).duration<3&player.spell(Sigil of Flame).cooldown>gcd*3&player.spell(Sigil of Flame).cooldown<25&player.spell(Infernal Strike).charges==2','player.ground'},
+	{'Immolation Aura', 'player.area(9).enemies >=1 & target.range<=9'},
 	{'Shear', 'inFront&player.buff(Metamorphosis)&player.pain<90', 'target'},
-	{'Immolation Aura', 'range<=9'},
 	{'Sigil of Flame', 'UI(flame)&!talent(5,1)&toggle(aoe)&advanced&range<31&!target.debuff(Sigil of Flame)', 'target.ground'},
 	{'Sigil of Flame', 'UI(flame)&{talent(5,1)||!advanced}&area(10).enemies>0&!target.debuff(Sigil of Flame)', 'player.ground'},
 	{'Fracture', '{!UI(schp_check) || player.health>UI(schp_spin)}&{player.pain>49||player.buff(Soul Fragments).count<4}', 'target'},
@@ -175,7 +177,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(581, {
-	name = Zylla.ClassColor..'[Camby\'s|r] Demon Hunter - Vengeance',
+	name = '['..Zylla.ClassColor..'Camby\'s|r] Demon Hunter - Vengeance',
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
