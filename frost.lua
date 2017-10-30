@@ -23,7 +23,7 @@ local GUI = {
 	-- Class Settings
 	{type = 'checkbox', text = 'Use Death Grip as backup Interrupt', key = 'DGInt', default = false},
 	{type = 'checkbox', text = 'Wraithwalk out of Root', key = 'wraithroot', default = false},
-	{type = 'checkbox', text = 'Obliteration', key = 'obliteration', default = true},
+	{type = 'checkbox', text = 'Obliteration', key = 'oblit', default = true},
 	{type = 'checkbox', text = 'Pillar of Frost', key = 'pof', default = true},
 	{type = 'checkbox', text = 'Sindragosa\'s Fury', key = 'sf', default = true},
 
@@ -96,7 +96,7 @@ local Cooldowns = {
 	-- actions.cds+=/breath_of_sindragosa,if=buff.pillar_of_frost.up
 	-- actions.cds+=/call_action_list,name=cold_heart,if=equipped.cold_heart&((buff.cold_heart.stack>=10&!buff.obliteration.up)|target.time_to_die<=gcd)
 	--actions.cds+=/obliteration,if=rune>=1&runic_power>=20&(!talent.frozen_pulse.enabled|rune<2|buff.pillar_of_frost.remains<=12)&(!talent.gathering_storm.enabled|!cooldown.remorseless_winter.ready)&(buff.pillar_of_frost.up|!talent.icecap.enabled)
-	{'Obliteration', 'UI(obliteration)&{player.buff(Pillar of Frost) || cooldown(Pillar of Frost).remains > 10}'},
+	{'Obliteration', 'UI(oblit)&{player.buff(Pillar of Frost) || cooldown(Pillar of Frost).remains > 10}'},
 	-- actions.cds+=/hungering_rune_weapon,if=!buff.hungering_rune_weapon.up&rune.time_to_2>gcd&runic_power<40
 
 }

@@ -217,7 +217,7 @@ local inCombat = {
 	{Mythic_Plus, 'range<=31'},
 	{dark_transformation, 'UI(dtran)'},
 	{valkyr, 'player.totem(Val\'kyr Battlemaiden)'},
-	{generic, 'target.inFront'}
+	{generic, 'target.inFront'},
 }
 
 local outCombat = {

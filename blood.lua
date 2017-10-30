@@ -76,12 +76,12 @@ local exeOnLoad = function()
 		text = 'Taunt a nearby enemy in combat, when threat gets low, without targeting it.',
 		icon = 'Interface\\Icons\\spell_nature_reincarnation',
 	})
-	NeP.Interface:AddToggle({
-		key = 'dps_rotation',
-		name = 'Use DPS rotation',
-		text = 'Single target dps rotation.',
-		icon = 'Interface\\Icons\\ability_backstab',
-	})
+	-- NeP.Interface:AddToggle({
+	-- 	key = 'dps_rotation',
+	-- 	name = 'Use DPS rotation',
+	-- 	text = 'Single target dps rotation.',
+	-- 	icon = 'Interface\\Icons\\ability_backstab',
+	-- })
 end
 
 local PreCombat = {
@@ -121,15 +121,15 @@ local Cooldowns = {
 }
 
 local Interrupts = {
-	{'&Mind Freeze', 'inFront&range<=15'},
+	{'!Mind Freeze', 'inFront&range<=15'},
 	{'!Asphyxiate', 'range<=30&inFront&spell(Mind Freeze).cooldown>=gcd&!player.lastgcd(Mind Freeze)'},
 	{'!Death Grip', 'UI(DGInt)&range<=30&inFront&spell(Mind Freeze).cooldown>=gcd&spell(Asphyxiate).cooldown>=gcd'},
 	{'!Arcane Torrent', 'inMelee&spell(Mind Freeze).cooldown>=gcd&!player.lastgcd(Mind Freeze)'},
 }
 
 local xTaunts = {
-	{'&Dark Command', 'inMelee&combat&alive&threat<100'},
-	{'&Death Grip', 'UI(DGTaunt)&range<=30&combat&alive&threat<100&spell(Dark Command).cooldown>=gcd&!player.lastgcd(Dark Command)'},
+	{'!Dark Command', 'inMelee&combat&alive&threat<100'},
+	{'!Death Grip', 'UI(DGTaunt)&range<=30&combat&alive&threat<100&spell(Dark Command).cooldown>=gcd&!player.lastgcd(Dark Command)'},
 }
 local dps = {
 	{'Death Strike', 'inFront&deficit<=10'},
@@ -153,23 +153,24 @@ local xCombat = {
 	{'Death Strike', 'inFront&player.health<=UI(DSA_spin)&UI(DSA_check)'},
 	{'Death Strike', 'inFront&player.runicpower>=UI(DSb_spin)&UI(DSb_check)'},
 	{'Death And Decay', 'UI(dndplayer_check)&!player.moving&talent(2,1)&!player.buff(Dancing Rune Weapon)&player.area(10).enemies>=UI(dndtarget_spin)', 'player.ground'},
-	{'Death And Decay', 'UI(dndtarget_check)&!player.moving&talent(2,1)&!player.buff(Dancing Rune Weapon)&player.area(10).enemies>=UI(dndtarget_spin)', 'target.ground'},	
+	{'Death And Decay', 'UI(dndtarget_check)&!player.moving&talent(2,1)&!player.buff(Dancing Rune Weapon)&target.area(10).enemies>=UI(dndtarget_spin)', 'target.ground'},	
 	{'Blooddrinker', 'UI(blooddrink_check)&player.health <= UI(blooddrink_spin)&inFront&!player.buff(Dancing Rune Weapon)'},
 	{'Marrowrend', 'player.buff(Bone Shield).duration<4&inFront'},
-	{'Blood Boil', 'player.area(10).enemies >= 1 || {player.area(10).enemies.debuff(Blood Plague)<gcd & spell(Blood Boil).charges>=1.8}'},
+	{'Blood Boil', 'target.range<9&player.area(9).enemies >= 1 & spell(Blood Boil).charges>=1.8'},
 	{'Death\'s Caress', 'range > 15 & range<=40&debuff(Blood Plague).remains<3&inFront', 'target'},
 	{'Marrowrend', 'player.buff(Bone Shield).count<=5&talent(3,1)&inFront'},
 	{'Consumption', 'UI(artifact_check) & player.health <= UI(artifact_spin) & inFront & inMelee'},
+	{'Death Strike', 'UI(doubleDS)&inFront&{player.buff(Blood Shield)||deficit<=15||{deficit<=25&player.buff(Dancing Rune Weapon)}}'},
 	{'Heart Strike', 'player.buff(Dancing Rune Weapon)'},
-	{'Death and Decay', 'UI(dndtarget_check)&advanced&range<=30&{{talent(2,1)&player.buff(Crimson Scourge)}||{area(10).enemies>=UI(dndtarget_spin)&player.buff(Crimson Scourge}}', 'target.ground'},
-	{'Death and Decay', 'UI(dndtarget_check)&advanced&range<=30&{{talent(2,1)&player.runes>=3}||{area(10).enemies>=UI(dndtarget_spin)}}', 'target.ground'},
+	{'Death and Decay', 'UI(dndtarget_check)&!player.moving&advanced&range<=30&{{talent(2,1)&player.buff(Crimson Scourge)}||{area(10).enemies>=UI(dndtarget_spin)&player.buff(Crimson Scourge}}', 'target.ground'},
+	{'Death and Decay', 'UI(dndtarget_check)&!player.moving&advanced&range<=30&{{talent(2,1)&player.runes>=3}||{area(10).enemies>=UI(dndtarget_spin)}}', 'target.ground'},
 	{'Death and Decay', 'UI(dndplayer_check)&!player.moving&{{talent(2,1)&player.buff(Crimson Scourge)}||{player.area(10).enemies>=UI(dndplayer_spin)&player.buff(Crimson Scourge}}', 'player.ground'},
 	{'Death and Decay', 'UI(dndplayer_check)&!player.moving&{{talent(2,1)&player.runes>=3}||{player.area(10).enemies>=UI(dndplayer_spin)}}', 'player.ground'},
-	{'Blood Boil', 'player.area(10).enemies>=1'},
-	{'Death and Decay', 'UI(dndtarget_check)&advanced&!talent(2,1)&range<=30&area(10).enemies>=1&player.buff(Crimson Scourge)', 'target.ground'},
+	{'Blood Boil', '!player.lastcastgcd(Blood Boil)&{player.area(9).enemies>=3 || {player.area(9).enemies>=1 & !player.moving}}'},
+	{'Death and Decay', 'UI(dndtarget_check)&!player.moving&advanced&!talent(2,1)&range<=30&target.area(10).enemies>=1&player.buff(Crimson Scourge)', 'target.ground'},
 	{'Death and Decay', 'UI(dndplayer_check)&!player.moving&!talent(2,1)&player.area(10).enemies>=1&player.buff(Crimson Scourge)', 'player.ground'},
-	{'Death And Decay', 'UI(dndplayer_check)&player.area(10).enemies>=UI(dndtarget_spin)', 'player.ground'},
-	{'Death And Decay', 'UI(dndtarget_check)&player.area(10).enemies>=UI(dndtarget_spin)', 'target.ground'},
+	{'Death And Decay', 'UI(dndplayer_check)&!player.moving&player.area(10).enemies>=UI(dndtarget_spin)', 'player.ground'},
+	{'Death And Decay', 'UI(dndtarget_check)&!player.moving&advanced&target.area(10).enemies>=UI(dndtarget_spin)', 'target.ground'},
 	{'Heart Strike', 'inFront&{player.runes>=3||player.buff(Bone Shield).count > 6}'},
 
 }
