@@ -10,13 +10,13 @@ local GUI = {
 	{type = 'spacer'},
 	--unpack(Zylla.PayPal_IMG),
 	{type = 'ruler'},
-	--TODO: Targetting: Use, or NOT use?! We'll see....
-	{type = 'header', size = 16, text = 'Targetting:', align = 'center'},
-	{type = 'combo', default = 'normal', key = 'target', list = Zylla.faketarget, width = 75},
-	{type = 'spacer'},
-	{type = 'text', text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
-	{type = 'ruler'},
-	-- Settings
+	-- --TODO: Targetting: Use, or NOT use?! We'll see....
+	-- {type = 'header', size = 16, text = 'Targetting:', align = 'center'},
+	-- {type = 'combo', default = 'normal', key = 'target', list = Zylla.faketarget, width = 75},
+	-- {type = 'spacer'},
+	-- {type = 'text', text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	-- {type = 'ruler'},
+	-- -- Settings
 	{type = 'header', size = 16, text = 'General Settings',	align = 'center'},
 	{type = 'spinner', size = 11, text = 'Interrupt at percentage:', key = 'intat', default = 60,	step = 5, shiftStep = 10,	max = 100, min = 1},
 	{type = 'checkbox', text = 'Enable DBM Integration', key = 'kDBM', default = false},
@@ -150,11 +150,11 @@ local Cooldowns = {
 local rotation = {
 	{'Avenger\'s Shield', 'inFront'},
 	{'&Shield of the Righteous', 'UI(sotrcap) & spell(Shield of the Righteous).charges >= 2.5 & inFront & target.range < 8 & !player.buff(Shield of the Righteous)', 'target'},
-	{'Consecration', '!player.moving & player.area(8).enemies>=UI(consecrationpriority_spin)'},
+	{'Consecration', '!player.moving & player.area(8).enemies>=UI(consecrationpriority_spin) & target.range < 10'},
 	{'Blessed Hammer', '!player.moving & player.area(12).enemies >= 1  & spell(Blessed Hammer).charges >= 3', nil},
 	{'Eye of Tyr', 'UI(eotmobs_check) & player.area(8).enemies>=UI(eotmobs_spin)'},
 	{'Judgment', 'inFront'},
-	{'Consecration', '!player.moving & player.area(8).enemies>0'},
+	{'Consecration', '!player.moving & player.area(8).enemies > 0 & target.range < 10'},
 	{'Blessed Hammer','player.area(12).enemies >= 1' ,nil},
 	{'Hammer of the Righteous', '!talent(1,2)'},
 }
@@ -171,11 +171,7 @@ local inCombat = {
 	{defCooldowns, 'toggle(defCooldowns)'},
 	{Survival, nil, 'player'},
 	{xTaunts, 'toggle(super_taunt)'},
-	{xCombat, 'UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==furthest', 'furthestenemy'},
+	{xCombat, 'target'},
 	{Mythic_Plus, 'inMelee'},
 }
 

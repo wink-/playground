@@ -17,12 +17,12 @@ local GUI = {
 	{type = 'spacer'},
 --	unpack(Zylla.PayPal_IMG),
 	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
-	--TODO: Targetting: Use, or NOT use?! We'll see....
-	{type = 'header', size = 16, text = 'Targetting:', align = 'center'},
-	{type = 'combo', default = 'normal', key = 'target', list = Zylla.faketarget, width = 75},
-	{type = 'spacer'},
-	{type = 'text', text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
-	{type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
+	-- --TODO: Targetting: Use, or NOT use?! We'll see....
+	-- {type = 'header', size = 16, text = 'Targetting:', align = 'center'},
+	-- {type = 'combo', default = 'normal', key = 'target', list = Zylla.faketarget, width = 75},
+	-- {type = 'spacer'},
+	-- {type = 'text', text = Zylla.ClassColor..'Only one can be enabled.\nChose between normal targetting, or hitting the highest/lowest enemy.|r'},
+	-- {type = 'spacer'}, {type = 'ruler'}, {type = 'spacer'},
 	-- Settings
 	{type = 'header', 	size = 16, text = 'Class Settings', align = 'center'},
 	{type = 'checkbox', text = 'Enable DBM Integration', key = 'kDBM', default = false},
@@ -192,7 +192,7 @@ local Combat = {
 	{'Judgment', 'debuff(Execution Sentence).duration<=gcd*2&debuff(Judgment).duration<=gcd*2'},
 	{'Consecration', 'toggle(aoe)&{spell(Blade of Justice).cooldown>=gcd*2||spell(Divine Hammer).cooldown>=gcd*2}'},
 	{'Wake of Ashes', 'toggle(aoe)&{player.holypower==0||player.holypower==1&{spell(Blade of Justice).cooldown>=gcd||spell(Divine Hammer).cooldown>=gcd}||player.holypower==2&{{spell(Zeal).charges<=0.65||spell(Crusader Strike).charges<=0.65}}}'},
-	{'Blade of Justice', 'player.holypower<=UI(boj_spin)'},
+	{'Blade of Justice', 'player.holypower<=2', 'target'},
 	{'Divine Hammer', 'toggle(aoe)&player.holypower<=UI(boj_spin)'},
 	{'Hammer of Justice', 'equipped(137065)&health>=75&player.holypower<=4'},
 	{'Hammer of Justice', 'player.holypower<=5&equipped(137065)&health>=75'},
@@ -224,11 +224,7 @@ local inCombat = {
 	{Blessings, nil, 'player'},
 	{Mythic_Plus, 'inMelee'},
 	{Group, 'player.movingfor<0.75&inGroup&toggle(groupAssist)', 'lowest'},
-	{xCombat, 'inMelee&UI(target)==normal', 'target'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==highest', 'highestenemy'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==lowest', 'lowestenemy'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==nearest', 'nearestenemy'},
-	{xCombat, 'combat&alive&inMelee&UI(target)==furthest', 'furthestenemy'},
+	{xCombat},
 }
 
 local outCombat = {

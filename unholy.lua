@@ -28,9 +28,8 @@ local GUI = {
 	{type = 'checkspin',	text = 'Apocalypse', key = 'apoc',	spin = 6, step = 1, shiftStep = 1, max = 8, min = 1, check = true},
 	{type = 'checkspin',	text = 'Army of the Dead', key = 'aotd',	spin = 20, step = 5, shiftStep = 1, max = 180, min = 0, check = true},
 	{type = 'checkbox',		text = 'Blighted Rune Weapon', align = 'left', key = 'brw', default = true},
-	{type = 'checkspin',	text = 'Dark Arbiter', key = 'darb', spin = 20, step = 5, shiftStep = 1, max = 180, min = 0, check = true},
+	{type = 'checkspin',	text = 'Summon Gargoyle/Dark Arbiter', key = 'darb', spin = 20, step = 5, shiftStep = 1, max = 180, min = 0, check = true},
 	{type = 'checkbox',		text = 'Dark Transformation', align = 'left', key = 'dtran', default = true},
-	{type = 'checkspin',	text = 'Summon Gargoyle', key = 'garg',	spin = 20, step = 5, shiftStep = 1, max = 180, min = 0, check = true},
 	{type = 'checkbox',		text = 'Trinket 1',	align = 'left', key = 'trinket1', default = false},
 	{type = 'checkbox',		text = 'Trinket 2',	align = 'left', key = 'trinket2', default = false},
 	{type = 'ruler'}, {type = 'spacer'},
@@ -105,7 +104,6 @@ local dark_transformation = {
 	{'Dark Transformation', 'equipped(137075) & !talent(6,1) & player.spell(Dark Arbiter).cooldown > 55', 'target'},
 	{'Dark Transformation', 'equipped(137075) & talent(6,1) & player.spell(Dark Arbiter).cooldown > 35', 'target'},
 	{'Dark Transformation', 'equipped(137075) & ttd < player.spell(Dark Arbiter).cooldown - 8', 'target'},
-
 	{'Dark Transformation', 'equipped(137075) & player.spell(Summon Gargoyle).cooldown > 160 & UI(dtran)', 'target'},
 	{'Dark Transformation', 'equipped(137075) & !talent(6,1) & player.spell(Summon Gargoyle).cooldown > 55 & UI(dtran)', 'target'},
 	{'Dark Transformation', 'equipped(137075) & talent(6,1) & player.spell(Summon Gargoyle).cooldown > 35 & UI(dtran)', 'target'},
@@ -130,17 +128,17 @@ local aoe = {
 local generic = {
 
 	--actions.generic=dark_arbiter,if=!equipped.137075&runic_power.deficit<30
-	{'Dark Arbiter', 'toggle(cooldowns) & !equipped(137075) & deficit < 30 & UI(darb_check) & ttd > UI(darb_spin)', 'target'},
+	{'Dark Arbiter', 'UI(darb_check) & toggle(cooldowns) & !equipped(137075) & deficit < 30 & ttd > UI(darb_spin)', 'target'},
 	--actions.generic+=/apocalypse,if=equipped.137075&debuff.festering_wound.stack>=6&talent.dark_arbiter.enabled
 	{'Apocalypse', 'equipped(137075) & UI(apoc_check) & debuff(Festering Wound).count >= UI(apoc_spin) & talent(7,1) ', 'target'},
 	--actions.generic+=/dark_arbiter,if=equipped.137075&runic_power.deficit<30&cooldown.dark_transformation.remains<2
-	{'Dark Arbiter', 'toggle(cooldowns) & equipped(137075) & deficit < 30 & player.spell(Dark Transformation).cooldown < 2 & UI(darb_check) & ttd > UI(darb_spin)', 'target'},
+	{'Dark Arbiter', 'UI(darb_check) & toggle(cooldowns) & equipped(137075) & deficit < 30 & player.spell(Dark Transformation).cooldown < 2 & ttd > UI(darb_spin)', 'target'},
 	--actions.generic+=/summon_gargoyle,if=!equipped.137075,if=rune<=3
-	{'Summon Gargoyle', 'toggle(cooldowns) & !equipped(137075) & runes <= 3  & UI(garg_check) & ttd > UI(garg_spin)', 'target'},
+	{'Summon Gargoyle', 'UI(darb_check) & toggle(cooldowns) & !equipped(137075) & runes <= 3 & ttd > UI(darb_spin)', 'target'},
 	--actions.generic+=/chains_of_ice,if=buff.unholy_strength.up&buff.cold_heart.stack>19
 	{'Chains of Ice', 'player.buff(Unholy Strength) & player.buff(Cold Heart).count > 19', 'target'},
 	--actions.generic+=/summon_gargoyle,if=equipped.137075&cooldown.dark_transformation.remains<10&rune<=3
-	{'Summon Gargoyle', 'toggle(cooldowns) & equipped(137075) & player.spell(Dark Transformation).cooldown < 10 & runes <= 3  & UI(garg_check) & ttd > UI(garg_spin)', 'target'},
+	{'Summon Gargoyle', 'UI(darb_check) & toggle(cooldowns) & equipped(137075) & player.spell(Dark Transformation).cooldown < 10 & runes <= 3 & ttd > UI(darb_spin)', 'target'},
 	--actions.generic+=/soul_reaper,if=debuff.festering_wound.stack>=6&cooldown.apocalypse.remains<4
 	{'Soul Reaper', 'debuff(Festering Wound).count >= 6 & player.spell(Apocalypse).cooldown < 4', 'target'},
 	--actions.generic+=/apocalypse,if=debuff.festering_wound.stack>=6
@@ -166,10 +164,10 @@ local generic = {
 	{'Defile', 'UI(dndplayer_check)', 'player.ground'},
 	--actions.generic+=/call_action_list,name=aoe,if=active_enemies>=2
 	{aoe, 'toggle(aoe)'},
-    --actions.generic+=/festering_strike,if=debuff.festering_wound.stack<=2&(debuff.festering_wound.stack<=4|(buff.blighted_rune_weapon.up|talent.castigator.enabled))&runic_power.deficit>5&(runic_power.deficit>23|!talent.castigator.enabled)
-    {'Festering Strike', 'debuff(Festering Wound).count <= 2 & {talent(3,2) || debuff(Festering Wound).count <= 4 || {player.buff(Blighted Rune Weapon) }} & player.deficit > 5 & {player.deficit>23 || !talent(3,2)}', 'target'},
-    --actions.generic+=/death_coil,if=!buff.necrosis.up&talent.necrosis.enabled&rune.time_to_4>gcd
-    {'Death Coil', 'talent(6,2) & !player.buff(Necrosis) & player.runes >= 3', 'target'},
+  --actions.generic+=/festering_strike,if=debuff.festering_wound.stack<=2&(debuff.festering_wound.stack<=4|(buff.blighted_rune_weapon.up|talent.castigator.enabled))&runic_power.deficit>5&(runic_power.deficit>23|!talent.castigator.enabled)
+  {'Festering Strike', 'debuff(Festering Wound).count <= 2 & {talent(3,2) || debuff(Festering Wound).count <= 4 || {player.buff(Blighted Rune Weapon) }} & player.deficit > 5 & {player.deficit>23 || !talent(3,2)}', 'target'},
+  --actions.generic+=/death_coil,if=!buff.necrosis.up&talent.necrosis.enabled&rune.time_to_4>gcd
+  {'Death Coil', 'talent(6,2) & !player.buff(Necrosis) & player.runes >= 3', 'target'},
 	--actions.generic+=/scourge_strike,if=(buff.necrosis.react|buff.unholy_strength.react|rune>=2)&debuff.festering_wound.stack>=1&(debuff.festering_wound.stack>=3|!(talent.castigator.enabled|equipped.132448))&runic_power.deficit>9&(runic_power.deficit>23|!talent.castigator.enabled)
 	{'Scourge Strike', '{player.buff(Necrosis) || player.buff(Unholy Strength) || player.runes >= 2} & debuff(Festering Wound).count >= 3 & deficit > 9', 'target'},
 	--actions.generic+=/clawing_shadows,if=(buff.necrosis.react|buff.unholy_strength.react|rune>=2)&debuff.festering_wound.stack>=1&(debuff.festering_wound.stack>=3|!equipped.132448)&runic_power.deficit>9
