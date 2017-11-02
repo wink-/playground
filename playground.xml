@@ -4,6 +4,8 @@
   <Script file="playground\frost.lua" />
   <Script file="playground\unholy.lua" />
   <Script file="playground\blood.lua" />
+  <Script file="playground\havoc.lua" />
   <Script file="playground\vengeance.lua" />
-  <Script file="playground\protpal.lua" />
+  <Script file="playground\retribution.lua" />
+  <Script file="playground\protpal.lua" />  
 </Ui>
