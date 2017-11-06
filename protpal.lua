@@ -148,14 +148,14 @@ local Cooldowns = {
 }
 
 local rotation = {
-	{'Avenger\'s Shield', 'inFront'},
+	{'Avenger\'s Shield', 'inFront', 'target'},
 	{'&Shield of the Righteous', 'UI(sotrcap) & spell(Shield of the Righteous).charges >= 2.5 & inFront & target.range < 8 & !player.buff(Shield of the Righteous)', 'target'},
 	{'Consecration', '!player.moving & player.area(8).enemies>=UI(consecrationpriority_spin) & target.range < 10'},
-	{'Blessed Hammer', '!player.moving & player.area(12).enemies >= 1  & spell(Blessed Hammer).charges >= 3', nil},
+	{'Blessed Hammer', '!player.moving & player.area(12).enemies >= 1  & spell(Blessed Hammer).charges >= 3'},
 	{'Eye of Tyr', 'UI(eotmobs_check) & player.area(8).enemies>=UI(eotmobs_spin)'},
-	{'Judgment', 'inFront'},
+	{'Judgment', 'inFront', 'target'},
 	{'Consecration', '!player.moving & player.area(8).enemies > 0 & target.range < 10'},
-	{'Blessed Hammer','player.area(12).enemies >= 1' ,nil},
+	{'Blessed Hammer','player.area(12).enemies >= 1'},
 	{'Hammer of the Righteous', '!talent(1,2)'},
 }
 
@@ -171,7 +171,7 @@ local inCombat = {
 	{defCooldowns, 'toggle(defCooldowns)'},
 	{Survival, nil, 'player'},
 	{xTaunts, 'toggle(super_taunt)'},
-	{xCombat, 'target'},
+	{xCombat},
 	{Mythic_Plus, 'inMelee'},
 }
 

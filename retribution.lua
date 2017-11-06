@@ -6,11 +6,11 @@ local Mythic_Plus = _G.Mythic_Plus
 local GUI = {
 --	unpack(Zylla.Logo_GUI),
 	-- Header
-	{type = 'header',  	size = 16, text = 'Keybinds',	 																				align = 'center'},
-	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',										align = 'left', 		key = 'lshift', 	default = true},
-	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Divine Steed|r',							align = 'left', 		key = 'lcontrol',	default = true},
-	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r',													align = 'left', 		key = 'lalt', 		default = false},
-	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r',													align = 'left', 		key = 'ralt', 		default = false},
+	{type = 'header',  	size = 16, text = 'Keybinds', align = 'center'},
+	{type = 'checkbox',	text = 'Left Shift: '..Zylla.ClassColor..'Pause|r',	align = 'left', key = 'lshift', default = true},
+	{type = 'checkbox',	text = 'Left Ctrl: '..Zylla.ClassColor..'Divine Steed|r',align = 'left', key = 'lcontrol',	default = true},
+	{type = 'checkbox',	text = 'Left Alt: '..Zylla.ClassColor..'|r', align = 'left', key = 'lalt', default = false},
+	{type = 'checkbox',	text = 'Right Alt: '..Zylla.ClassColor..'|r', align = 'left', key = 'ralt', default = false},
 	{type = 'spacer'},
 --	{type = 'checkbox', text = 'Enable Chatoverlay', 																					key = 'chat', 				width = 55, 			default = true, desc = Zylla.ClassColor..'This will enable some messages as an overlay!|r'},
 --  unpack(Zylla.PayPal_GUI),
@@ -38,28 +38,29 @@ local GUI = {
 	{type = 'checkbox', text = 'Use Trinket #2', key = 'trinket2', default = false},
 	{type = 'checkspin',text = 'BoJ/DH Holy Power set to 3 without T20',key = 'boj', spin = 2, step = 1, shiftStep = 1, max = 5, min = 1, check = false},
 	{type = 'spacer'},
-	{type = 'checkspin',text = 'Kil\'Jaeden\'s Burning Wish - Units', 												key = 'kj', 				align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = true, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
-	{type = 'ruler'},	  {type = 'spacer'},
+	{type = 'checkspin',text = 'Kil\'Jaeden\'s Burning Wish - Units', key = 'kj', align = 'left', width = 55, step = 1, shiftStep = 2, spin = 4, max = 20, min = 1, check = false, desc = Zylla.ClassColor..'Legendary will be used only on selected amount of units!|r'},
+	{type = 'ruler'}, {type = 'spacer'},
 	-- Survival
-	{type = 'header', 	size = 16, text = 'Survival', 																				align = 'center'},
-	{type = 'checkspin',text = 'Gift of the Naaru', 																					key = 'GotN', 			spin = 40, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
-	{type = 'checkspin',text = 'Lay on Hands', 																								key = 'LoH', 				spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = true},
-	{type = 'checkspin',text = 'Flash of Light', 																							key = 'FoL', 				spin = 40, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
-	{type = 'checkspin',text = 'Shield of Vengeance', 																				key = 'SoV', 				spin = 75, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
-	{type = 'checkspin',text = 'Eye for an Eye', 																							key = 'EfaE', 			spin = 90, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
-	{type = 'checkspin',text = 'Healthstone',																									key = 'HS',					spin = 45, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
-	{type = 'checkspin',text = 'Healing Potion',																							key = 'AHP',				spin = 45, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
-	{type = 'ruler'},		{type = 'spacer'},
+	{type = 'header', 	size = 16, text = 'Survival', align = 'center'},
+	{type = 'checkspin',text = 'Justicar\'s Vengeance with Divine Purpose', key = 'jv', spin = 70,  step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Lay on Hands', key = 'LoH', spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Flash of Light', key = 'FoL', spin = 40, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Shield of Vengeance', key = 'SoV', spin = 75, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Eye for an Eye', key = 'EfaE', spin = 90, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healthstone', key = 'HS', spin = 45, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Healing Potion', key = 'AHP', spin = 45, step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Gift of the Naaru', key = 'GotN', spin = 40, step = 5, shiftStep = 10, max = 100, min = 1, check = false},
+	{type = 'ruler'}, {type = 'spacer'},
 	-- Group Assistance
-	{type = 'header', 	size = 16, text = 'Emergency Group Assistance', 											align = 'center'},
-	{type = 'checkspin',text = 'Flash of Light', 																							key = 'G_FoL', 			spin = 35, step = 5, shiftStep = 10, max = 100, min = 1, check = false},
-	{type = 'checkspin',text = 'Lay on Hands', 																								key = 'G_LoH', 			spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = false},
-	{type = 'checkspin',text = 'Blessing of Protection', 																			key = 'G_BoP', 			spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = false},
-	{type = 'checkspin',text = 'Blessing of Protection on TANKS',															key = 'T_BoP', 			spin = 5,  step = 5, shiftStep = 10, max = 100, min = 1, check = false},
-	{type = 'checkbox',	text = 'Dispel Party Members',																				key = 'disAll', 		default = true},
-	{type = 'checkbox', text = 'Use Blessing of Freedom', 																		key = 'G_BoF', 			default = false},
-	{type = 'ruler'},		{type = 'spacer'},
-	unpack(Zylla.Mythic_GUI),
+	{type = 'header', 	size = 16, text = 'Emergency Group Assistance',	align = 'center'},
+	{type = 'checkspin',text = 'Flash of Light', key = 'G_FoL', spin = 35, step = 5, shiftStep = 10, max = 100, min = 1, check = false},
+	{type = 'checkspin',text = 'Lay on Hands', key = 'G_LoH', spin = 10,  step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Blessing of Protection', key = 'G_BoP', spin = 30,  step = 5, shiftStep = 10, max = 100, min = 1, check = true},
+	{type = 'checkspin',text = 'Blessing of Protection on TANKS', key = 'T_BoP', spin = 5, step = 5, shiftStep = 10, max = 100, min = 1, check = false},
+	{type = 'checkbox',	text = 'Dispel Party Members', key = 'disAll', default = true},
+	{type = 'checkbox', text = 'Use Blessing of Freedom', key = 'G_BoF', default = true},
+	{type = 'ruler'}, {type = 'spacer'},
+	--unpack(Zylla.Mythic_GUI),
 }
 
 local exeOnLoad = function()
@@ -112,6 +113,7 @@ local Keybinds = {
 }
 
 local Survival = {
+	{'Justicar\'s Vengeance', 'UI(jv_check)&player.buff(Divine Purpose)&player.health<=UI(jv_spin)', 'target'},
 	{'!Flash of Light', 'movingfor<0.75&UI(FoL_check)&health<=UI(FoL_spin)'},
 	{'!Lay on Hands', 'UI(LoH_check)&health<=UI(LoH_spin)'},
 	{'!Shield of Vengeance', 'UI(SoV_check)&health<=UI(SoV_spin)'},
@@ -162,44 +164,34 @@ local Cooldowns = {
 }
 
 local DS_Castable = {
-	{'Divine Storm', 'toggle(aoe)&debuff(Judgment)&player.buff(Divine Purpose).duration<=gcd*2'},
-	{'Divine Storm', 'toggle(aoe)&debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)'},
-	{'Divine Storm', 'toggle(aoe)&debuff(Judgment)&player.holypower>=5&{!talent(7,2)||player.buff(Crusade).duration>=gcd*3}'},
-	{'Divine Storm', 'toggle(aoe)&spell(Wake of Ashes).cooldown<=gcd*2'},
-	{'Divine Storm', 'toggle(aoe)&player.buff(Whisper of the Nathrezim).duration<=gcd*1.5&{!talent(7,2)||player.buff(Crusade).duration>=gcd*3}'},
+	{'Divine Storm', 'toggle(aoe)&debuff(Judgment)&player.buff(Divine Purpose)'},
+	{'Divine Storm', 'toggle(aoe)&debuff(Judgment)&{!talent(7,2)||player.buff(Crusade).duration>=gcd*2}'},
 	{'Divine Storm', 'toggle(aoe)&player.buff(Divine Purpose)'},	-- Might Get removed...
-	{'Divine Storm', 'toggle(aoe)&player.buff(The Fires of Justice)&{!talent(7,2)||player.buff(Crusade).duration>=gcd*3}'},
-	{'Divine Storm', 'toggle(aoe)&player.holypower>=3&{spell(Judgment).cooldown&!debuff(Judgment)}'} -- Attempt to fix target-issue with Judgment
+	{'Divine Storm', 'toggle(aoe)&player.holypower>=3&{spell(Judgment).cooldown&!debuff(Judgment)}'}, -- Attempt to fix target-issue with Judgment
 }
 
 local Templar = {
-	{'Templar\'s Verdict', 'debuff(Judgment)&player.buff(Divine Purpose).duration<=gcd*2'},
-	{'Templar\'s Verdict', 'debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)'},
-	{'Templar\'s Verdict', 'debuff(Judgment)&player.holypower>=3&{player.buff(Crusade).stack<15|||player.buff(137048)}'},
-	{'Templar\'s Verdict', 'debuff(Judgment)&player.holypower>=5&{!equipped(137048)||{equipped(137048)&||player.race(Blood Elf)}}'},
-	{'Templar\'s Verdict', '{equipped(137020)||debuff(Judgment)}&spell(Wake of Ashes).cooldown<=gcd*2&{!talent(7,2)||player.buff(Crusade).duration>=gcd*3}'},
-	{'Templar\'s Verdict', 'debuff(Judgment)&player.buff(Whisper of the Nathrezim).duration<=gcd*1.5&{{!talent(7,2)||player.buff(Crusade).duration>=gcd*3}}'},
-	{'Templar\'s Verdict', 'player.holypower>=3&{spell(Judgment).cooldown&!debuff(Judgment)}'} --XXX: Attempt to fix target-issues with Judgment
+	{'Templar\'s Verdict', 'debuff(Judgment)&player.buff(Divine Purpose)', 'target'},
+	{'Templar\'s Verdict', '{equipped(137020)||debuff(Judgment)}&{!talent(7,2)||player.buff(Crusade).duration>=gcd*2}', 'target'},
+	{'Templar\'s Verdict', 'player.holypower>=3&debuff(Judgment)', 'target'},
+	{'Templar\'s Verdict', 'player.holypower>=3&{spell(Judgment).cooldown>gcd&!debuff(Judgment)}', 'target'},
 }
 
 local Combat = {
-	{DS_Castable, 'player.area(6).enemies>=2||{player.buff(Scarlet Inquisitor\'s Expurgation).stack>=29}&{player.buff(Avenging Wrath)||{player.buff(Crusade).stack>=15}||{spell(Crusade).cooldown>15&!player.buff(Crusade)}||spell(Avenging Wrath).cooldown>15}'},
+	{'Justicar\'s Vengeance', 'debuff(Judgment)&player.buff(Divine Purpose)&!equipped(137020)'},
+	{'Justicar\'s Vengeance', 'debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)&!equipped(137020)'},
+	{DS_Castable, 'player.area(12).enemies>=2'},
 	{Templar},
 	{'Execution Sentence','player.area(6).enemies<=3&{spell(Judgment).cooldown<=gcd*4.5||debuff(Judgment).duration>=gcd*4.5}'},
 	{'Divine Storm', 'toggle(aoe)&debuff(Judgment)&player.area(6).enemies>=2&player.holypower>=3&{player.buff(Crusade).stack<15||player.buff(137048)}'},
-	{'Justicar\'s Vengeance', 'debuff(Judgment)&player.buff(Divine Purpose)&!equipped(137020)'},
-	{'Justicar\'s Vengeance', 'debuff(Judgment)&player.holypower>=5&player.buff(Divine Purpose)&!equipped(137020)'},
-	{'Judgment', 'debuff(Execution Sentence).duration<=gcd*2&debuff(Judgment).duration<=gcd*2'},
+	{'Hammer of Justice', 'equipped(137065)&health>=75&player.holypower<=4'},
+	{'Judgment', nil, 'target'},
 	{'Consecration', 'toggle(aoe)&{spell(Blade of Justice).cooldown>=gcd*2||spell(Divine Hammer).cooldown>=gcd*2}'},
 	{'Wake of Ashes', 'toggle(aoe)&{player.holypower==0||player.holypower==1&{spell(Blade of Justice).cooldown>=gcd||spell(Divine Hammer).cooldown>=gcd}||player.holypower==2&{{spell(Zeal).charges<=0.65||spell(Crusader Strike).charges<=0.65}}}'},
 	{'Blade of Justice', 'player.holypower<=2', 'target'},
 	{'Divine Hammer', 'toggle(aoe)&player.holypower<=UI(boj_spin)'},
-	{'Hammer of Justice', 'equipped(137065)&health>=75&player.holypower<=4'},
-	{'Hammer of Justice', 'player.holypower<=5&equipped(137065)&health>=75'},
-	{'Zeal', 'spell(Zeal).charges>=1.65&player.holypower<=4&{spell(Blade of Justice).cooldown>=gcd*2||spell(Divine Hammer).cooldown>=gcd*2}&debuff(Judgment).duration>=gcd'},
-	{'Zeal', 'player.holypower<=4||{spell(Judgment).cooldown&!debuff(Judgment)}'},
-	{'Crusader Strike', 'spell(Crusader Strike).charges>=1.65-talent(2,1).enabled*0.25&player.holypower<=4&{spell(Blade of Justice).cooldown>=gcd*2||spell(Divine Hammer).cooldown>=gcd*2}&debuff(Judgment).duration>=gcd'},
-	{'Crusader Strike', 'player.holypower<=4||{spell(Judgment).cooldown&!debuff(Judgment)}'}
+	{'Zeal'},
+	{'Crusader Strike'}
 }
 
 local Opener = {
@@ -214,7 +206,7 @@ local xCombat = {
 	{Interrupts, 'toggle(interrupts)&toggle(xIntRandom)&@Zylla.InterruptAt(intat)', 'enemies'},
 	{Cooldowns, 'toggle(cooldowns)&inMelee&ttd>10'},
 	{Opener, 'xtime<3&{spell(Judgment).cooldown<=gcd||spell(Blade of Justice).cooldown<=gcd||spell(Wake of Ashes).cooldown<=gcd}'},
-	{Combat, 'inMelee&inFront'},
+	{Combat, 'inFront', 'target'},
 }
 
 local inCombat = {
@@ -237,7 +229,7 @@ local outCombat = {
 }
 
 NeP.CR:Add(70, {
-	name = '['..Zylla.ClassColor..'CamZylla\'s|r] Paladin - Retribution',
+	name = '['..Zylla.ClassColor..'Camby\'s|r] Paladin - Retribution',
 --pooling = true, --TODO: TEST!!!
 	ic = inCombat,
 	ooc = outCombat,

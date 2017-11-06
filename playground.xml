@@ -7,5 +7,8 @@
   <Script file="playground\havoc.lua" />
   <Script file="playground\vengeance.lua" />
   <Script file="playground\retribution.lua" />
-  <Script file="playground\protpal.lua" />  
+  <Script file="playground\protpal.lua" /> 
+  <Script file="playground\shadow.lua" />
+  <Script file="playground\discipline.lua" />
+  <Script file="playground\holy.lua" />
 </Ui>
