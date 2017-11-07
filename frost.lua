@@ -104,7 +104,7 @@ local Cooldowns = {
 local obliteration = {
 -- #Obliteration rotation
 -- actions.obliteration=remorseless_winter,if=talent.gathering_storm.enabled
-	{'Remorseless Winter', 'player.area(10).enemies>0'},
+	{'Remorseless Winter', 'talent(6,3)&target.range<10'},
 -- actions.obliteration+=/frostscythe,if=buff.killing_machine.up&spell_targets.frostscythe>1
 	{'Frostscythe', 'toggle(aoe) & player.buff(Killing Machine) & player.area(9).enemies.inFront>=1', 'target'},
 -- actions.obliteration+=/obliterate,if=buff.killing_machine.up|(spell_targets.howling_blast>=3&!buff.rime.up)
